@@ -38,7 +38,7 @@ export default function UploadZone({ children }: PropsWithChildren) {
   );
   const { getRootProps, getInputProps, isDragActive } = useMediaDropZone(onDrop);
   return (
-    <section className={'flex-grow gri d place-content-center'} {...getRootProps()}>
+    <section className={'flex-grow grid place-content-center'} {...getRootProps()}>
       <input data-testid='dropzone' {...getInputProps()} />
       {!mediaFilePath && <DragStataNotify isDragActive={isDragActive} />}
       {mediaFilePath && children}

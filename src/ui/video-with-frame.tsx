@@ -3,6 +3,7 @@ import { ComponentProps, forwardRef, useCallback, useState } from 'react';
 
 import { boundingBoxToPolygonPoints } from '../libs/utils.tsx';
 import { ExtendDetection } from '../types.ts';
+import { SvgOverlay } from './svg-overlay.tsx';
 import { useVideoFrameHook } from './use-video-frame-hook.tsx';
 
 export type Ref = HTMLVideoElement;
@@ -37,26 +38,16 @@ export const VideoWithFrame = forwardRef<Ref, VideoProps>((props, ref) => {
   const videoRef = useVideoFrameHook(callback);
 
   return (
-    <div className={'relative'} style={{ clipPath: 'polygon(174,154 174,262 282,262 282,154)' }}>
+    <div
+      className={'relative h-full'}
+      //style={{ clipPath: 'polygon(174,154 174,262 282,262 282,154)' }}
+    >
       <video ref={videoRef} {...props} />
-      <svg
-        viewBox='0 0'
-        // ref={overlayRef}
-        className='overlay absolute top-0 left-0 pointer-events-none'
-      >
-        <mask id='myMask'>
-          <rect x='0' y='0' width='100%' height='100%' fill='white' />
-          {detections.map((i, key) => (
-            <DetectionBox {...i} key={key} />
-          ))}
-        </mask>
-        <rect
-          height={'100%'}
-          width={'100%'}
-          className={'filter saturate-0 opacity-50'}
-          mask='url(#myMask)'
-        />
-      </svg>
+      <SvgOverlay>
+        {detections.map((i, key) => (
+          <DetectionBox {...i} key={key} />
+        ))}
+      </SvgOverlay>
     </div>
   );
 });
