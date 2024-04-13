@@ -65,7 +65,18 @@ export function boundingBoxToPolygonPoints({
     [x2, y1]
   ] satisfies [number, number][];
   const pathData = polygonToPathData(points);
-  return <path fill={'black'} d={pathData} />;
+  return (
+    <path
+      fill={'black'}
+      d={pathData}
+      id='Path_611'
+      stroke={'green'}
+      data-name='Path 611'
+      transform='translate(1.502 -10.892)'
+      strokeWidth={4}
+      // fill='#FFFFFF'
+    />
+  );
   // return (
   //   <Polygon
   //     fill='black'

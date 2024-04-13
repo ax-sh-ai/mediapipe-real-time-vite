@@ -11,7 +11,7 @@ export function MediaViewer() {
 
   return (
     <section className={'h-dvh w-dvw bg-red-300 grid place-content-center'}>
-      <button onClick={clearMediaFilePath}>Button</button>
+      <button onClick={clearMediaFilePath} className={'rounded full bg-red-400 p-3'}></button>
       <VideoPlayer url={url} />
     </section>
   );
