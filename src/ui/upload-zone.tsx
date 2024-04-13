@@ -13,7 +13,6 @@ export default function UploadZone({ children }: PropsWithChildren) {
     <T extends File>(
       acceptedFiles: T[] // fileRejections: FileRejection[], event: React.DragEvent<HTMLElement>
     ) => {
-      console.log(acceptedFiles);
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
 
