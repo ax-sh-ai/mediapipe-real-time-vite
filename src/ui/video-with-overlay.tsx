@@ -8,7 +8,35 @@ import { SvgOverlay } from './svg-overlay.tsx';
 
 export type VideoProps = ComponentProps<'video'>;
 function DetectionBox(detection: ExtendDetection) {
-  const polygon = boundingBoxToPolygonPoints(detection);
+  const pathData = boundingBoxToPolygonPoints(detection)!;
+  // @ts-ignore
+  if (detection.colorful) {
+    return (
+      <path
+        fill={'transparent'}
+        d={pathData}
+        id='Path_611'
+        stroke={'#10c020'}
+        data-name='Path 611'
+        transform='translate(1.502 -10.892)'
+        strokeWidth={4}
+        strokeLinecap='round'
+      />
+    );
+  }
+
+  return (
+    <path
+      fill={'black'}
+      d={pathData}
+      id='Path_611'
+      stroke={'green'}
+      data-name='Path 611'
+      transform='translate(1.502 -10.892)'
+      strokeWidth={4}
+      // fill='#FFFFFF'
+    />
+  );
   return polygon;
   // return <rect x={p?.x1} y={p?.y1} width={'5'} height={'5'} />;
 }
