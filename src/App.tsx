@@ -1,15 +1,10 @@
-
-import './App.css'
-import { useFaceDetector } from './hooks/use-face-detector'
+import './App.css';
+import { useFaceDetector } from './hooks/use-face-detector';
 
 function App() {
-const faceDetector = useFaceDetector()
+  const faceDetector = useFaceDetector();
 
-  return (
-    <>
-
-    </>
-  )
+  return <>gooo</>;
 }
 
-export default App
+export default App;
