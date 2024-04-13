@@ -1,10 +1,18 @@
 import { create } from 'zustand';
 
 interface AppState {
-  bears: number;
-  increase: (by: number) => void;
+  mediaFilePath: Blob;
+  addMediaFilePath: (by: Blob) => void;
+  clearMediaFilePath: () => void;
+  foo: () => void;
+  url: () => string;
 }
-export const useAppStore = create<AppState>((set) => ({
-  bears: 0,
-  increase: (by) => set((state) => ({ bears: state.bears + by }))
+export const useAppStore = create<AppState>((set, f) => ({
+  mediaFilePath: null as unknown as Blob,
+  clearMediaFilePath: () => set({ mediaFilePath: null as unknown as Blob }),
+  addMediaFilePath: (mediaFilePath) => set(() => ({ mediaFilePath })),
+  url() {
+    return URL.createObjectURL(this.mediaFilePath);
+  },
+  foo: () => set((state) => ({ mediaFilePath: state.mediaFilePath }))
 }));

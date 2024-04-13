@@ -1,6 +1,9 @@
 import { PropsWithChildren, useCallback } from 'react';
+import { DropEvent, FileRejection } from 'react-dropzone';
+import { File } from 'vitest';
 
 import { useMediaDropZone } from '../hooks/use-media-drop-zone.ts';
+import { useAppStore } from '../store.ts';
 
 function DragStataNotify({ isDragActive }: { isDragActive: boolean }) {
   if (isDragActive) return <p>Drop the files here ...</p>;
@@ -9,31 +12,35 @@ function DragStataNotify({ isDragActive }: { isDragActive: boolean }) {
 }
 
 export default function UploadZone({ children }: PropsWithChildren) {
-  const onDrop = useCallback(
-    <T extends File>(
-      acceptedFiles: T[] // fileRejections: FileRejection[], event: React.DragEvent<HTMLElement>
-    ) => {
-      acceptedFiles.forEach((file) => {
-        const reader = new FileReader();
+  const addMediaFilePath = useAppStore(({ addMediaFilePath }) => addMediaFilePath);
+  const mediaFilePath = useAppStore(({ mediaFilePath }) => mediaFilePath);
 
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
-        reader.onload = () => {
-          // Do whatever you want with the file contents
-          const binaryStr = reader.result;
-          console.log({ binaryStr });
-        };
-        reader.readAsArrayBuffer(file);
+  const onDrop = useCallback(
+    <T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => {
+      acceptedFiles.forEach((file) => {
+        addMediaFilePath(file);
+        // const reader = new FileReader();
+        //
+        // reader.onabort = () => console.log('file reading was aborted');
+        // reader.onerror = () => console.log('file reading has failed');
+        // reader.onload = () => {
+        //   // Do whatever you want with the file contents
+        //   const binaryStr = reader.result;
+        //   console.log({ binaryStr });
+        //
+        //
+        // };
+        // reader.readAsArrayBuffer(file);
       });
     },
     []
   );
   const { getRootProps, getInputProps, isDragActive } = useMediaDropZone(onDrop);
   return (
-    <section className={'flex-1 grid place-content-center'} {...getRootProps()}>
+    <section className={'flex-grow grid place-content-center'} {...getRootProps()}>
       <input data-testid='dropzone' {...getInputProps()} />
-      <DragStataNotify isDragActive={isDragActive} />
-      {children}
+      {!mediaFilePath && <DragStataNotify isDragActive={isDragActive} />}
+      {mediaFilePath && children}
     </section>
   );
 }
