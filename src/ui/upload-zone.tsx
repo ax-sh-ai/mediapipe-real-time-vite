@@ -1,6 +1,4 @@
 import { PropsWithChildren, useCallback } from 'react';
-import { DropEvent, FileRejection } from 'react-dropzone';
-import { File } from 'vitest';
 
 import { useMediaDropZone } from '../hooks/use-media-drop-zone.ts';
 import { useAppStore } from '../store.ts';
@@ -16,7 +14,10 @@ export default function UploadZone({ children }: PropsWithChildren) {
   const mediaFilePath = useAppStore(({ mediaFilePath }) => mediaFilePath);
 
   const onDrop = useCallback(
-    <T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => {
+    <T extends Blob>(
+      acceptedFiles: T[]
+      // fileRejections: FileRejection[], event: DropEvent
+    ) => {
       acceptedFiles.forEach((file) => {
         addMediaFilePath(file);
         // const reader = new FileReader();
