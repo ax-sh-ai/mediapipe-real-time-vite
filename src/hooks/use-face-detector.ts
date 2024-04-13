@@ -12,6 +12,6 @@ export function useFaceDetector(runningMode: RunningMode = 'IMAGE') {
     }
 
     createDetector().then(() => console.log('Face Detector Loaded'));
-  }, [faceDetector, runningMode]);
+  }, [runningMode]);
   return faceDetector;
 }
