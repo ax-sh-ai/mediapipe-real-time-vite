@@ -1,7 +1,7 @@
 import { Detection } from '@mediapipe/tasks-vision';
 import { ElementRef, useEffect, useRef } from 'react';
 
-import { useFaceDetector } from '../hooks/use-face-detector.ts';
+import { useFaceDetector } from './use-face-detector';
 
 // async function handleSeekToNextFrame(video: HTMLVideoElement) {
 //   const requestNextFrame = (callback: any) => {
