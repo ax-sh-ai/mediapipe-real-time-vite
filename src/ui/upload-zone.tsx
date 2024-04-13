@@ -1,12 +1,12 @@
-import { PropsWithChildren, ReactNode, useCallback } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
 import Dropzone from 'react-dropzone';
+
+import { FillScreen } from './fill-screen.tsx';
 
 export default function UploadZone({ children }: PropsWithChildren) {
   const onDrop = useCallback(
     <T extends File>(
-      acceptedFiles: T[]
-      // fileRejections: FileRejection[],
-      // event: React.DragEvent<HTMLElement>
+      acceptedFiles: T[] // fileRejections: FileRejection[], event: React.DragEvent<HTMLElement>
     ) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
@@ -26,14 +26,14 @@ export default function UploadZone({ children }: PropsWithChildren) {
   return (
     <Dropzone onDrop={onDrop}>
       {({ getRootProps, getInputProps }) => (
-        <section>
+        <FillScreen className={'grid place-content-center'}>
           <div {...getRootProps()}>
             <input {...getInputProps()} />
             <p>Drag 'n' drop some files here, or click to select files</p>
           </div>
-        </section>
+          {children}
+        </FillScreen>
       )}
     </Dropzone>
   );
-  return <section>{children}</section>;
 }
