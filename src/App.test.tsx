@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 
 import App from './App';
 
+global.URL.createObjectURL = vi.fn().mockImplementation(() => 'mocked-object-url');
+
 afterEach(cleanup);
 
 describe('Renders main page correctly', async () => {
