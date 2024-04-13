@@ -11,7 +11,7 @@ function MediaViewer() {
 function App() {
   return (
     <>
-      <FillScreen className={'bg-blue-400'}>
+      <FillScreen className={'flex'}>
         <UploadZone>
           <MediaViewer />
         </UploadZone>
