@@ -24,6 +24,5 @@ describe('Renders main page correctly', async () => {
     await waitFor(() => result.current !== null);
     expect(result.current).toBe(mockDetector);
     expect(createFaceDetector).toHaveBeenCalledWith('IMAGE');
-    console.log(result.current);
   });
 });

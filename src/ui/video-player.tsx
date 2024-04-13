@@ -1,4 +1,4 @@
-import { ElementRef, useCallback, useEffect, useRef, useState } from 'react';
+import { ElementRef, useCallback, useRef, useState } from 'react';
 
 import { useFaceDetector } from '../hooks/use-face-detector.ts';
 import { ExtendDetection } from '../types.ts';

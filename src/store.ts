@@ -7,7 +7,7 @@ interface AppState {
   foo: () => void;
   url: () => string;
 }
-export const useAppStore = create<AppState>((set, f) => ({
+export const useAppStore = create<AppState>((set) => ({
   mediaFilePath: null as unknown as Blob,
   clearMediaFilePath: () => set({ mediaFilePath: null as unknown as Blob }),
   addMediaFilePath: (mediaFilePath) => set(() => ({ mediaFilePath })),
