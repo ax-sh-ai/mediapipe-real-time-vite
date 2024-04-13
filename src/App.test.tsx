@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from './App';
 
-// Tests
+afterEach(cleanup);
+
 describe('Renders main page correctly', async () => {
   it.todo('Should render the page correctly', async () => {
     // Setup
@@ -13,17 +14,22 @@ describe('Renders main page correctly', async () => {
     // Expectations
     expect(h1).not.toBeNull();
   });
-  it('upload test files', () => {
-    const files = [
-      new File(['hello'], 'hello.geojson', { type: 'application/json' }),
-      new File(['there'], 'hello2.geojson', { type: 'application/json' })
-    ];
-
+  it('upload test files', async () => {
+    // const files = [
+    //   new File(['hello'], 'hello.geojson', { type: 'application/json' }),
+    //   new File(['there'], 'hello2.geojson', { type: 'application/json' })
+    // ];
+    const file = new File(['hello'], 'hello.geojson', {
+      type: 'application/json'
+    });
     render(<App />);
     const input = screen.getByTestId<HTMLInputElement>('dropzone');
-    userEvent.upload(input, files);
+
+    await userEvent.upload(input, file);
+    // await userEvent.upload(input, files);
+
     console.log(input.files);
-    console.log(input);
+    // console.log(input);
     // expect(input.files).toHaveLength(2);
     // expect(input.files[0]).toStrictEqual(files[0]);
     // expect(input.files[1]).toStrictEqual(files[1]);
