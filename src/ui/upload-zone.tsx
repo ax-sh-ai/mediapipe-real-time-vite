@@ -1,13 +1,13 @@
 import { PropsWithChildren, useCallback } from 'react';
-import Dropzone from 'react-dropzone';
 
-import { FillScreen } from './fill-screen.tsx';
+import { useMediaDropZone } from '../hooks/use-media-drop-zone.tsx';
 
 export default function UploadZone({ children }: PropsWithChildren) {
   const onDrop = useCallback(
     <T extends File>(
       acceptedFiles: T[] // fileRejections: FileRejection[], event: React.DragEvent<HTMLElement>
     ) => {
+      console.log(acceptedFiles);
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
 
@@ -16,24 +16,25 @@ export default function UploadZone({ children }: PropsWithChildren) {
         reader.onload = () => {
           // Do whatever you want with the file contents
           const binaryStr = reader.result;
-          console.log(binaryStr);
+          console.log({ binaryStr });
         };
         reader.readAsArrayBuffer(file);
       });
     },
     []
   );
+  const { getRootProps, getInputProps, isDragActive } = useMediaDropZone(onDrop);
   return (
-    <Dropzone onDrop={onDrop}>
-      {({ getRootProps, getInputProps }) => (
-        <FillScreen className={'grid place-content-center'}>
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <p>Drag 'n' drop some files here, or click to select files</p>
-          </div>
-          {children}
-        </FillScreen>
+    <section
+      className={'h-full w-full grid place-content-center bg-red-400   '}
+      {...getRootProps()}
+    >
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <p>Drag 'n' drop some files here, or click to select files</p>
       )}
-    </Dropzone>
+    </section>
   );
 }

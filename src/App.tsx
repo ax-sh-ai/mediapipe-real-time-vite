@@ -1,14 +1,21 @@
 import { useFaceDetector } from './hooks/use-face-detector';
+import { FillScreen } from './ui/fill-screen.tsx';
 import UploadZone from './ui/upload-zone.tsx';
 
-function App() {
+function MediaViewer() {
   const faceDetector = useFaceDetector();
   console.log(faceDetector);
+  return <div>viewer</div>;
+}
 
-  // faceDetector.detect()
+function App() {
   return (
     <>
-      <UploadZone>hooo</UploadZone>
+      <FillScreen className={'bg-blue-400'}>
+        <UploadZone>
+          <MediaViewer />
+        </UploadZone>
+      </FillScreen>
     </>
   );
 }
