@@ -1,8 +1,9 @@
+import { Detection } from '@mediapipe/tasks-vision';
 import { ComponentProps, forwardRef, useCallback, useState } from 'react';
 
-import { useFaceDetector } from '../hooks/use-face-detector.ts';
+import { boundingBoxToPolygonPoints } from '../libs/utils.tsx';
 import { ExtendDetection } from '../types.ts';
-import { VideoFrameHookCallbackArgs, useVideoFrameHook } from './use-video-frame-hook.tsx';
+import { useVideoFrameHook } from './use-video-frame-hook.tsx';
 
 export type Ref = HTMLVideoElement;
 export type VideoProps = ComponentProps<'video'>;
@@ -14,36 +15,29 @@ function DetectionBox(detection: ExtendDetection) {
 }
 
 export const VideoWithFrame = forwardRef<Ref, VideoProps>((props, ref) => {
-  const faceDetector = useFaceDetector();
   const [detections, setDetections] = useState<ExtendDetection[]>([]);
 
-  const callback = useCallback(
-    ({ video, timestamp, metadata }: VideoFrameHookCallbackArgs) => {
-      const { detections } = faceDetector.detect(video);
-      const { clientWidth, clientHeight, videoWidth, videoHeight, offsetWidth, offsetHeight } =
-        video;
-      setDetections(
-        detections.map(
-          (i) =>
-            ({
-              ...i,
-              videoHeight,
-              videoWidth,
-              clientWidth,
-              clientHeight,
-              offsetWidth,
-              offsetHeight
-            }) as ExtendDetection
-        )
-      );
-      console.log(`timestamp: ${timestamp}`);
-    },
-    [faceDetector]
-  );
+  const callback = useCallback((video: HTMLVideoElement, detections: Detection[]) => {
+    const { clientWidth, clientHeight, videoWidth, videoHeight, offsetWidth, offsetHeight } = video;
+    setDetections(
+      detections.map(
+        (i) =>
+          ({
+            ...i,
+            videoHeight,
+            videoWidth,
+            clientWidth,
+            clientHeight,
+            offsetWidth,
+            offsetHeight
+          }) as ExtendDetection
+      )
+    );
+  }, []);
   const videoRef = useVideoFrameHook(callback);
 
   return (
-    <div>
+    <div className={'relative'} style={{ clipPath: 'polygon(174,154 174,262 282,262 282,154)' }}>
       <video ref={videoRef} {...props} />
       <svg
         viewBox='0 0'

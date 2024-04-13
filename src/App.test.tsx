@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import App from './App';
 
+// @ts-ignore
 global.URL.createObjectURL = vi.fn().mockImplementation(() => 'mocked-object-url');
 
 afterEach(cleanup);

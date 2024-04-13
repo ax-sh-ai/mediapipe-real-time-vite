@@ -1,14 +1,13 @@
-import { Polygon } from '@visx/shape';
-
+// import { Polygon } from '@visx/shape';
 import { ExtendDetection } from '../types.ts';
 
 export function boundingBoxToStyle({
-                                     boundingBox,
-                                     videoWidth,
-                                     videoHeight,
-                                     clientHeight,
-                                     clientWidth
-                                   }: ExtendDetection) {
+  boundingBox,
+  videoWidth,
+  videoHeight,
+  clientHeight,
+  clientWidth
+}: ExtendDetection) {
   if (!boundingBox) return {};
   const { originY, originX, height, width } = boundingBox;
   const ratioX = videoWidth / clientWidth;
@@ -44,15 +43,15 @@ function polygonToPathData(points: [number, number][]) {
 // `clientHeight` = the height of an element + the vertical padding.
 // `offsetHeight` = the height of the element + the vertical padding + the top and bottom borders + the horizontal scrollbar (if it's available).
 export function boundingBoxToPolygonPoints({
-                                             boundingBox,
-                                             videoWidth,
-                                             videoHeight,
+  boundingBox,
+  videoWidth,
+  videoHeight,
 
-                                             clientWidth,
-                                             offsetHeight,
-                                             clientHeight,
-                                             offsetWidth
-                                           }: ExtendDetection) {
+  clientWidth,
+  offsetHeight
+  // clientHeight,
+  // offsetWidth
+}: ExtendDetection) {
   if (!boundingBox) return null;
   const { originY, originX, height, width } = boundingBox;
   const ratioX = clientWidth / videoWidth;

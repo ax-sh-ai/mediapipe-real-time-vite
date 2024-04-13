@@ -1,4 +1,4 @@
-import { ElementRef, useCallback, useEffect, useRef } from 'react';
+import { ElementRef, useRef } from 'react';
 
 import { VideoWithFrame } from './video-with-frame.tsx';
 

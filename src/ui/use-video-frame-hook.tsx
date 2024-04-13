@@ -1,4 +1,7 @@
-import { ElementRef, useCallback, useEffect, useRef } from 'react';
+import { Detection } from '@mediapipe/tasks-vision';
+import { ElementRef, useEffect, useRef } from 'react';
+
+import { useFaceDetector } from '../hooks/use-face-detector.ts';
 
 // async function handleSeekToNextFrame(video: HTMLVideoElement) {
 //   const requestNextFrame = (callback: any) => {
@@ -24,21 +27,26 @@ export type VideoFrameHookCallbackArgs = {
 };
 export type VideoFrameHookCallback = (props: VideoFrameHookCallbackArgs) => void;
 
-export function useVideoFrameHook(callback: VideoFrameHookCallback) {
+export function useVideoFrameHook(
+  callback: (video: HTMLVideoElement, detection: Detection[]) => void
+) {
   const ref = useRef<ElementRef<'video'>>(null);
-  const handleCallback = useCallback(callback, []);
+  const faceDetector = useFaceDetector();
+
   useEffect(() => {
     const video = ref.current;
 
     async function initDrawingLoop(video: HTMLVideoElement) {
       if (video.requestVideoFrameCallback) {
-        const drawingLoop = (
-          timestamp: DOMHighResTimeStamp,
-          metadata: VideoFrameCallbackMetadata
-        ) => {
-          handleCallback({ video, timestamp, metadata });
-          video.requestVideoFrameCallback(drawingLoop);
-        };
+        const drawingLoop = () =>
+          // timestamp: DOMHighResTimeStamp,
+          // metadata: VideoFrameCallbackMetadata
+          {
+            const { detections } = faceDetector.detect(video);
+            callback(video, detections);
+            // console.log(`timestamp: ${timestamp}`, { metadata });
+            video.requestVideoFrameCallback(drawingLoop);
+          };
         video.requestVideoFrameCallback(drawingLoop);
       }
       // else if (video.seekToNextFrame) {
@@ -54,6 +62,6 @@ export function useVideoFrameHook(callback: VideoFrameHookCallback) {
     if (!video) return;
     void initDrawingLoop(video);
     // video.cancelVideoFrameCallback
-  }, []);
+  }, [faceDetector]);
   return ref;
 }
