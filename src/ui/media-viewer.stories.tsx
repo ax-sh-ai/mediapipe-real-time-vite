@@ -1,24 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { PropsWithChildren } from 'react';
+import { ElementRef, useRef } from 'react';
 
-import videoSrc from './video.mp4';
-
-export function VideoWithOverlayLayers({ src, children }: PropsWithChildren<{ src: string }>) {
-  return (
-    <div className='relative inline-block w-full max-w-full'>
-      <video loop muted playsInline controls src={src} className='w-full h-auto block' />
-      <svg className='absolute top-0 left-0 w-full h-full overflow-hidden bg-red-300/40 pointer-events-none'>
-        {children}
-      </svg>
-    </div>
-  );
-}
+import { VideoWithSvgOverlay } from './video-with-svg-overlay.tsx';
 
 function VideoViewer() {
+  const ref = useRef<ElementRef<'video'>>(null);
   return (
     <div>
-      <VideoWithOverlayLayers src={videoSrc}>a</VideoWithOverlayLayers>
+      <VideoWithSvgOverlay
+        video={
+          <video
+            ref={ref}
+            loop
+            muted
+            playsInline
+            controls
+            src={'./video.mp4'}
+            className='w-full h-auto block'
+          />
+        }
+      >
+        a
+      </VideoWithSvgOverlay>
     </div>
   );
 }
