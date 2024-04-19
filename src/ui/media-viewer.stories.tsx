@@ -57,10 +57,11 @@ export function VideoViewerResponsive() {
         const bb = i.boundingBox;
         const scaleX = video.clientWidth / video.videoWidth;
         const scaleY = video.clientHeight / video.videoHeight;
-        // @ts-ignore
-        i.boundingBox.originX *= scaleX;
-        // @ts-ignore
-        i.boundingBox.originY *= scaleY;
+        if (bb) {
+          bb.originX *= scaleX;
+          bb.originY *= scaleY;
+        }
+
         return i;
       })
     );
