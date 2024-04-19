@@ -4,13 +4,11 @@ import UploadZone from './ui/upload-zone.tsx';
 
 function App() {
   return (
-    <>
-      <FillScreen className={'flex'}>
-        <UploadZone>
-          <MediaViewer />
-        </UploadZone>
-      </FillScreen>
-    </>
+    <FillScreen className={'flex'}>
+      <UploadZone>
+        <MediaViewer />
+      </UploadZone>
+    </FillScreen>
   );
 }
 

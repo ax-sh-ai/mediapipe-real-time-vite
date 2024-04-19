@@ -6,7 +6,7 @@ import { VideoPlayer } from './video-player.tsx';
 export function MediaViewer() {
   const mediaFilePath = useAppStore(({ mediaFilePath }) => mediaFilePath);
   const clearMediaFilePath = useAppStore(({ clearMediaFilePath }) => clearMediaFilePath);
-  // @ts-ignore
+
   const url = useMemo(() => mediaFilePath && URL.createObjectURL(mediaFilePath), [mediaFilePath]);
 
   return (
