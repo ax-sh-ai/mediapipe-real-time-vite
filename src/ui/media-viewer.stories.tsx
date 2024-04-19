@@ -90,9 +90,10 @@ export function VideoViewerResponsive() {
           console.log(angle, keypoints, 'angle');
           return (
             <rect
-              className={'fill-yellow-300/30 saturate-100'}
+              className={'stroke-yellow-300 fill-transparent saturate-100'}
               x={originX}
               y={originY}
+              strokeLinecap={'round'}
               width={width}
               height={height}
             />
