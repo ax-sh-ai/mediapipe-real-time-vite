@@ -60,6 +60,8 @@ export function VideoViewerResponsive() {
         if (bb) {
           bb.originX *= scaleX;
           bb.originY *= scaleY;
+          bb.height *= scaleY;
+          bb.width *= scaleX;
         }
 
         return i;
