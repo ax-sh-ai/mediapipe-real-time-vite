@@ -1,17 +1,25 @@
+import { Detection } from '@mediapipe/tasks-vision';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { ElementRef, useRef } from 'react';
+import { useCallback, useState } from 'react';
 
+import { useVideoFrameHook } from '../hooks/use-video-frame-hook.ts';
 import { VideoWithSvgOverlay } from './video-with-svg-overlay.tsx';
 
 function VideoViewer() {
-  const ref = useRef<ElementRef<'video'>>(null);
+  // const ref = useRef<ElementRef<'video'>>(null);
+  const [detections, setDetections] = useState<Detection[]>([]);
+  const callback = useCallback(
+    (video: HTMLVideoElement, detections: Detection[]) => setDetections(detections),
+    []
+  );
+  const videoRef = useVideoFrameHook(callback);
   return (
     <div>
       <VideoWithSvgOverlay
         video={
           <video
-            ref={ref}
+            ref={videoRef}
             loop
             muted
             playsInline
@@ -21,7 +29,20 @@ function VideoViewer() {
           />
         }
       >
-        a
+        {detections.map(({ boundingBox, keypoints }) => {
+          if (!boundingBox) return <></>;
+          const { originX, originY, height, width, angle } = boundingBox;
+          console.log(angle, keypoints, 'angle');
+          return (
+            <rect
+              className={'fill-yellow-300/30 saturate-100'}
+              x={originX}
+              y={originY}
+              width={width}
+              height={height}
+            />
+          );
+        })}
       </VideoWithSvgOverlay>
     </div>
   );
