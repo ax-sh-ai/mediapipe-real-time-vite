@@ -1,4 +1,4 @@
-import { FaceDetector, FilesetResolver } from '@mediapipe/tasks-vision';
+import { Detection, FaceDetector, FilesetResolver } from '@mediapipe/tasks-vision';
 
 export type RunningMode = 'IMAGE' | 'VIDEO';
 export async function createFaceDetector(runningMode: RunningMode) {
@@ -16,4 +16,20 @@ export async function createFaceDetector(runningMode: RunningMode) {
     runningMode: runningMode
   });
   return faceDetector;
+}
+
+export function makeDetectionResponsive(video: HTMLVideoElement) {
+  return (i: Detection) => {
+    const bb = i.boundingBox;
+    const scaleX = video.clientWidth / video.videoWidth;
+    const scaleY = video.clientHeight / video.videoHeight;
+    if (bb) {
+      bb.originX *= scaleX;
+      bb.originY *= scaleY;
+      bb.height *= scaleY;
+      bb.width *= scaleX;
+    }
+
+    return i;
+  };
 }

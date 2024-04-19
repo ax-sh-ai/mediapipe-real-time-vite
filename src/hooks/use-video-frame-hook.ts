@@ -26,10 +26,8 @@ export type VideoFrameHookCallbackArgs = {
   metadata: VideoFrameCallbackMetadata;
 };
 export type VideoFrameHookCallback = (props: VideoFrameHookCallbackArgs) => void;
-
-export function useVideoFrameHook(
-  callback: (video: HTMLVideoElement, detection: Detection[]) => void
-) {
+export type DetectionCallbackArgs = { video: HTMLVideoElement; detections: Detection[] };
+export function useVideoFrameHook(callback: (props: DetectionCallbackArgs) => void) {
   const ref = useRef<ElementRef<'video'>>(null);
   const faceDetector = useFaceDetector();
 
@@ -43,7 +41,7 @@ export function useVideoFrameHook(
           // metadata: VideoFrameCallbackMetadata
           {
             const { detections } = faceDetector.detect(video);
-            callback(video, detections);
+            callback({ video, detections });
             // console.log(`timestamp: ${timestamp}`, { metadata });
             video.requestVideoFrameCallback(drawingLoop);
           };
