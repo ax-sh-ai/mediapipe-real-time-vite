@@ -48,6 +48,55 @@ function VideoViewer() {
   );
 }
 
+export function VideoViewerResponsive() {
+  // const ref = useRef<ElementRef<'video'>>(null);
+  const [detections, setDetections] = useState<Detection[]>([]);
+  const callback = useCallback((video: HTMLVideoElement, detections: Detection[]) => {
+    setDetections(
+      detections.map((i) => {
+        const bb = i.boundingBox;
+        const scaleX = 1;
+        // @ts-ignore
+        i.boundingBox.originX *= scaleX;
+        return i;
+      })
+    );
+  }, []);
+  const videoRef = useVideoFrameHook(callback);
+  return (
+    <div>
+      <VideoWithSvgOverlay
+        video={
+          <video
+            ref={videoRef}
+            loop
+            muted
+            playsInline
+            controls
+            src={'./video.mp4'}
+            className='w-full h-auto block'
+          />
+        }
+      >
+        {detections.map(({ boundingBox, keypoints }) => {
+          if (!boundingBox) return <></>;
+          const { originX, originY, height, width, angle } = boundingBox;
+          console.log(angle, keypoints, 'angle');
+          return (
+            <rect
+              className={'fill-yellow-300/30 saturate-100'}
+              x={originX}
+              y={originY}
+              width={width}
+              height={height}
+            />
+          );
+        })}
+      </VideoWithSvgOverlay>
+    </div>
+  );
+}
+
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof VideoViewer> = {
   title: 'Example/VideoViewer',
