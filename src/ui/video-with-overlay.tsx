@@ -37,7 +37,7 @@ function DetectionBox(detection: ExtendDetection) {
       // fill='#FFFFFF'
     />
   );
-  return polygon;
+
   // return <rect x={p?.x1} y={p?.y1} width={'5'} height={'5'} />;
 }
 export function VideoWithOverlay(props: VideoProps) {
