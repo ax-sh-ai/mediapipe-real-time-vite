@@ -55,9 +55,12 @@ export function VideoViewerResponsive() {
     setDetections(
       detections.map((i) => {
         const bb = i.boundingBox;
-        const scaleX = 1;
+        const scaleX = video.clientWidth / video.videoWidth;
+        const scaleY = video.clientHeight / video.videoHeight;
         // @ts-ignore
         i.boundingBox.originX *= scaleX;
+        // @ts-ignore
+        i.boundingBox.originY *= scaleY;
         return i;
       })
     );
