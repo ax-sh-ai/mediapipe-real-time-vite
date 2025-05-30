@@ -1,10 +1,18 @@
-import { SyntheticEvent, useCallback, useRef, useState } from 'react';
+import { Detection } from '@mediapipe/tasks-vision';
+import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+
+import { useFaceDetectorWithAutoRetry } from '../image-annotation/use-face-detector-hook.ts';
 
 type ImageDimensions = Pick<HTMLImageElement, 'naturalWidth' | 'naturalHeight'>;
 
 export function useImageDimensions() {
   const ref = useRef<HTMLImageElement>(null);
   const [dimensions, setDimensions] = useState<ImageDimensions>({} as ImageDimensions);
+  const [detections, setDetections] = useState<Detection[]>([]);
+  const { detector } = useFaceDetectorWithAutoRetry({
+    runningMode: 'IMAGE',
+    delegate: 'GPU'
+  });
 
   // Convert pixel coordinates to normalized (0-1) coordinates
   const normalize = useCallback((pixelValue: number, dimension: number) => {
@@ -20,5 +28,13 @@ export function useImageDimensions() {
     });
   }, []);
 
-  return { ref, dimensions, handleLoad, normalize };
+  useEffect(() => {
+    const img = ref.current;
+    if (!img) return;
+    if (!detector) return;
+    const { detections } = detector.detect(img);
+    setDetections(detections);
+  }, [detector]);
+
+  return { ref, dimensions, handleLoad, normalize, detections };
 }

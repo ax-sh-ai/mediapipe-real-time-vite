@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { useAppStore } from '../../store.ts';
+import { FillScreen } from '../fill-screen.tsx';
+import UploadZone from '../upload-zone.tsx';
 import { ImageSvgAnnotationOverlay } from './svg-annotation-overlay.tsx';
 import { useImageDimensions } from './use-image.dimensions.tsx';
 
@@ -114,3 +117,42 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+function MediaSvgOverlayDroppedFileContainer() {
+  const { ref, dimensions, handleLoad, normalize, detections } = useImageDimensions();
+  const mediaFilePath = useAppStore(({ mediaFilePath }) => mediaFilePath);
+  const url = URL.createObjectURL(mediaFilePath);
+
+  return (
+    <div className={'w-[500px] overflow-hidden'}>
+      <ImageSvgAnnotationOverlay ref={ref} src={url} onLoad={handleLoad}>
+        {dimensions &&
+          detections &&
+          detections.map((item, key) => {
+            const { originX, originY, height, width } = item.boundingBox!;
+            return (
+              <rect
+                className='stroke-yellow-300 hover:stroke-red-300 fill-transparent pointer-events-auto'
+                x={normalize(originX, dimensions.naturalWidth)}
+                y={normalize(originY, dimensions.naturalHeight)}
+                width={normalize(width, dimensions.naturalWidth)}
+                height={normalize(height, dimensions.naturalHeight)}
+                strokeWidth={0.005}
+                key={key}
+              />
+            );
+          })}
+      </ImageSvgAnnotationOverlay>
+    </div>
+  );
+}
+
+export const WithKeypoints: Story = {
+  render: () => (
+    <FillScreen className={'flex'}>
+      <UploadZone>
+        <MediaSvgOverlayDroppedFileContainer />
+      </UploadZone>
+    </FillScreen>
+  )
+};
