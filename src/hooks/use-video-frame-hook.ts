@@ -1,5 +1,5 @@
 import { Detection } from '@mediapipe/tasks-vision';
-import { ElementRef, useEffect, useRef } from 'react';
+import { type ComponentRef, useEffect, useRef } from 'react';
 
 import { useFaceDetector } from './use-face-detector';
 
@@ -31,7 +31,7 @@ export type DetectionCallbackArgs = {
   detections: Detection[];
 };
 export function useVideoFrameHook(callback: (props: DetectionCallbackArgs) => void) {
-  const ref = useRef<ElementRef<'video'>>(null);
+  const ref = useRef<ComponentRef<'video'>>(null);
   const faceDetector = useFaceDetector();
 
   useEffect(() => {
