@@ -73,7 +73,7 @@ function MediaSvgOverlayContainer() {
             const { originX, originY, height, width } = item.boundingBox;
             return (
               <rect
-                className='stroke-yellow-300 hover:stroke-red-300 fill-transparent'
+                className='stroke-yellow-300 hover:stroke-red-300 fill-transparent pointer-events-auto'
                 x={normalize(originX, dimensions.naturalWidth)}
                 y={normalize(originY, dimensions.naturalHeight)}
                 width={normalize(width, dimensions.naturalWidth)}
