@@ -1,10 +1,11 @@
+import { Detection } from '@mediapipe/tasks-vision';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { useAppStore } from '../../store.ts';
 import { FillScreen } from '../fill-screen.tsx';
 import UploadZone from '../upload-zone.tsx';
 import { ImageSvgAnnotationOverlay } from './svg-annotation-overlay.tsx';
-import { useImageDimensions } from './use-image.dimensions.tsx';
+import { ImageDimensions, useImageDimensions } from './use-image.dimensions.tsx';
 
 const data = [
   {
@@ -66,43 +67,11 @@ const data = [
 
 function MediaSvgOverlayContainer() {
   const { ref, dimensions, handleLoad, normalize } = useImageDimensions();
-  const dotRadius = 30;
+
   return (
     <div className={'w-[500px] overflow-hidden'}>
       <ImageSvgAnnotationOverlay ref={ref} src={'./img_1.png'} onLoad={handleLoad}>
-        {/* Render bounding boxes using normalized coordinates */}
-        {dimensions &&
-          data.map((item, key) => {
-            const { originX, originY, height, width } = item.boundingBox;
-            return (
-              <rect
-                className='stroke-yellow-300 hover:stroke-red-300 fill-transparent pointer-events-auto'
-                x={normalize(originX, dimensions.naturalWidth)}
-                y={normalize(originY, dimensions.naturalHeight)}
-                width={normalize(width, dimensions.naturalWidth)}
-                height={normalize(height, dimensions.naturalHeight)}
-                strokeWidth={0.005}
-                key={key}
-              />
-            );
-          })}
-
-        {/* Render keypoints (already normalized 0-1) */}
-        {dimensions &&
-          data.map((item, itemKey) =>
-            item.keypoints.map((point, pointKey) => (
-              <ellipse
-                key={`${itemKey}-${pointKey}`}
-                cx={point.x}
-                cy={point.y}
-                rx={normalize(dotRadius, dimensions.naturalWidth)}
-                ry={normalize(dotRadius, dimensions.naturalHeight)}
-                fill='blue'
-                stroke='white'
-                strokeWidth={0.001}
-              />
-            ))
-          )}
+        <RenderDetections normalize={normalize} detections={data} dimensions={dimensions} />
       </ImageSvgAnnotationOverlay>
     </div>
   );
@@ -117,6 +86,51 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+type RenderDetectionsProps = {
+  detections: Detection[];
+  dimensions: ImageDimensions;
+  normalize: (value: number, ratio: number) => number;
+};
+function RenderDetections({ detections, dimensions, normalize }: RenderDetectionsProps) {
+  const dotRadius = 30;
+  return (
+    <>
+      {/* Render bounding boxes using normalized coordinates */}
+      {dimensions &&
+        detections.map((item, key) => {
+          const { originX, originY, height, width } = item.boundingBox!;
+          return (
+            <rect
+              className='stroke-yellow-300 hover:stroke-red-300 fill-transparent pointer-events-auto'
+              x={normalize(originX, dimensions.naturalWidth)}
+              y={normalize(originY, dimensions.naturalHeight)}
+              width={normalize(width, dimensions.naturalWidth)}
+              height={normalize(height, dimensions.naturalHeight)}
+              strokeWidth={0.005}
+              key={key}
+            />
+          );
+        })}
+
+      {/* Render keypoints (already normalized 0-1) */}
+      {dimensions &&
+        detections.map((item, itemKey) =>
+          item.keypoints.map((point, pointKey) => (
+            <ellipse
+              key={`${itemKey}-${pointKey}`}
+              cx={point.x}
+              cy={point.y}
+              rx={normalize(dotRadius, dimensions.naturalWidth)}
+              ry={normalize(dotRadius, dimensions.naturalHeight)}
+              fill='blue'
+              stroke='white'
+              strokeWidth={0.001}
+            />
+          ))
+        )}
+    </>
+  );
+}
 
 function MediaSvgOverlayDroppedFileContainer() {
   const { ref, dimensions, handleLoad, normalize, detections } = useImageDimensions();
@@ -126,22 +140,7 @@ function MediaSvgOverlayDroppedFileContainer() {
   return (
     <div className={'w-[500px] overflow-hidden'}>
       <ImageSvgAnnotationOverlay ref={ref} src={url} onLoad={handleLoad}>
-        {dimensions &&
-          detections &&
-          detections.map((item, key) => {
-            const { originX, originY, height, width } = item.boundingBox!;
-            return (
-              <rect
-                className='stroke-yellow-300 hover:stroke-red-300 fill-transparent pointer-events-auto'
-                x={normalize(originX, dimensions.naturalWidth)}
-                y={normalize(originY, dimensions.naturalHeight)}
-                width={normalize(width, dimensions.naturalWidth)}
-                height={normalize(height, dimensions.naturalHeight)}
-                strokeWidth={0.005}
-                key={key}
-              />
-            );
-          })}
+        <RenderDetections normalize={normalize} detections={detections} dimensions={dimensions} />
       </ImageSvgAnnotationOverlay>
     </div>
   );

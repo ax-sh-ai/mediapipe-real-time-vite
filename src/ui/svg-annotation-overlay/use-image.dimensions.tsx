@@ -3,7 +3,7 @@ import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useFaceDetectorWithAutoRetry } from '../image-annotation/use-face-detector-hook.ts';
 
-type ImageDimensions = Pick<HTMLImageElement, 'naturalWidth' | 'naturalHeight'>;
+export type ImageDimensions = Pick<HTMLImageElement, 'naturalWidth' | 'naturalHeight'>;
 
 export function useImageDimensions() {
   const ref = useRef<HTMLImageElement>(null);
