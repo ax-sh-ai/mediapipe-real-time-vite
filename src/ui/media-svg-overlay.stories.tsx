@@ -5,7 +5,8 @@ import {
   type PropsWithChildren,
   forwardRef,
   useEffect,
-  useRef
+  useRef,
+  useState, useCallback
 } from 'react';
 
 function MediaSvgOverlay({
@@ -17,8 +18,8 @@ function MediaSvgOverlay({
       <div className='w-full'>{media}</div>
       <svg
         className='absolute inset-0 w-full h-full pointer-events-none'
-        preserveAspectRatio='xMidYMid meet'
-        viewBox='0 0 1000 1000'
+        preserveAspectRatio='none'
+        viewBox='0 0 1 1'
       >
         {children}
       </svg>
@@ -26,25 +27,26 @@ function MediaSvgOverlay({
   );
 }
 
-const ImageSvgOverlay = forwardRef<HTMLImageElement, Omit<ComponentPropsWithRef<'img'>, 'ref'>>(
-  ({ src, alt, className, children, ...props }, ref) => {
-    return (
-      <MediaSvgOverlay
-        media={
-          <img
-            ref={ref}
-            alt={alt}
-            src={src}
-            className={clsx('ImageMediaWithSvgOverlay w-full h-auto block', className)}
-            {...props}
-          />
-        }
-      >
-        {children}
-      </MediaSvgOverlay>
-    );
-  }
-);
+const ImageSvgOverlay = forwardRef<
+  HTMLImageElement,
+  PropsWithChildren<Omit<ComponentPropsWithRef<'img'>, 'ref'>>
+>(({ src, alt, className, children, ...props }, ref) => {
+  return (
+    <MediaSvgOverlay
+      media={
+        <img
+          ref={ref}
+          alt={alt}
+          src={src}
+          className={clsx('ImageMediaWithSvgOverlay w-full h-auto block', className)}
+          {...props}
+        />
+      }
+    >
+      {children}
+    </MediaSvgOverlay>
+  );
+});
 
 const data = [
   {
@@ -104,55 +106,83 @@ const data = [
   }
 ];
 
-
-
-function useImageRatio() {
+function useImageDimensions() {
   const ref = useRef<HTMLImageElement>(null);
-  useEffect(() => {
+  const [dimensions, setDimensions] = useState<{
+    naturalWidth: number;
+    naturalHeight: number;
+  } | null>(null);
+
+  const handleLoad = useCallback(() => {
     const img = ref.current;
     if (!img) return;
-    //   todo later
-  }, []);
-  return { ref };
+
+    setDimensions({
+      naturalWidth: img.naturalWidth,
+      naturalHeight: img.naturalHeight
+    });
+  },[]);
+
+  return { ref, dimensions, handleLoad };
 }
 
 function MediaSvgOverlayContainer() {
-  const { ref } = useImageRatio();
-  function calculateRatio(img: HTMLImageElement) {
-    const { clientHeight, clientWidth, naturalHeight, naturalWidth } = img;
-    console.log(clientHeight / naturalHeight, naturalWidth / clientWidth, 'natural');
-  }
-  const ratio = 0.12; // fixme make it dynamic
+  const { ref, dimensions, handleLoad } = useImageDimensions();
+
+  // Convert pixel coordinates to normalized (0-1) coordinates
+  const normalize = (pixelValue: number, dimension: number) => {
+    return pixelValue / dimension;
+  };
 
   return (
     <div className={'w-[500px] overflow-hidden'}>
-      <ImageSvgOverlay
-        ref={ref}
-        src={'./img.png'}
-        onLoad={(e) => calculateRatio(e.target as HTMLImageElement)}
-      >
-        <circle cx='500' cy='500' r='50' fill='red' stroke='white' strokeWidth='4' />
-        {data.map((i, key) => {
-          const { originX, originY, height, width } = i.boundingBox;
-          return (
-            <rect
-              className={
-                'stroke-yellow-300 hover:stroke-red-300 fill-transparent saturate-100 stroke-3'
-              }
-              x={originY * ratio}
-              y={originX * ratio}
-              width={width * ratio}
-              height={height * ratio}
-              key={key}
+      <ImageSvgOverlay ref={ref} src={'./img.png'} onLoad={handleLoad}>
+        {/*/!* Test circle at center *!/*/}
+        {/*<circle*/}
+        {/*  cx={0.5}*/}
+        {/*  cy={0.5}*/}
+        {/*  r={0.02}*/}
+        {/*  fill='red'*/}
+        {/*  stroke='white'*/}
+        {/*  strokeWidth={0.002}*/}
+        {/*/>*/}
+
+        {/* Render bounding boxes using normalized coordinates */}
+        {dimensions &&
+          data.map((item, key) => {
+            const { originX, originY, height, width } = item.boundingBox;
+            return (
+              <rect
+                className='stroke-yellow-300 hover:stroke-red-300 fill-transparent'
+                x={normalize(originX, dimensions.naturalWidth)}
+                y={normalize(originY, dimensions.naturalHeight)}
+                width={normalize(width, dimensions.naturalWidth)}
+                height={normalize(height, dimensions.naturalHeight)}
+                strokeWidth={0.005}
+                key={key}
+              />
+            );
+          })}
+
+        {/* Render keypoints (already normalized 0-1) */}
+        {data.map((item, itemKey) =>
+          item.keypoints.map((point, pointKey) => (
+            <circle
+              key={`${itemKey}-${pointKey}`}
+              cx={point.x}
+              cy={point.y}
+              r={0.01}
+              fill='blue'
+              stroke='white'
+              strokeWidth={0.001}
             />
-          );
-        })}
+          ))
+        )}
       </ImageSvgOverlay>
     </div>
   );
 }
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof MediaSvgOverlayContainer> = {
   title: 'Mediapipe/Media Overlay',
   component: MediaSvgOverlayContainer
@@ -161,5 +191,4 @@ const meta: Meta<typeof MediaSvgOverlayContainer> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {};
