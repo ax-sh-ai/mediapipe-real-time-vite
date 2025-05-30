@@ -26,7 +26,10 @@ export type VideoFrameHookCallbackArgs = {
   metadata: VideoFrameCallbackMetadata;
 };
 export type VideoFrameHookCallback = (props: VideoFrameHookCallbackArgs) => void;
-export type DetectionCallbackArgs = { video: HTMLVideoElement; detections: Detection[] };
+export type DetectionCallbackArgs = {
+  video: HTMLVideoElement;
+  detections: Detection[];
+};
 export function useVideoFrameHook(callback: (props: DetectionCallbackArgs) => void) {
   const ref = useRef<ElementRef<'video'>>(null);
   const faceDetector = useFaceDetector();
@@ -46,8 +49,7 @@ export function useVideoFrameHook(callback: (props: DetectionCallbackArgs) => vo
             video.requestVideoFrameCallback(drawingLoop);
           };
         video.requestVideoFrameCallback(drawingLoop);
-      }
-      // else if (video.seekToNextFrame) {
+      } // else if (video.seekToNextFrame) {
       //   await handleSeekToNextFrame(video);
       // }
       else {

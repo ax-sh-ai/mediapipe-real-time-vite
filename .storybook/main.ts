@@ -16,9 +16,9 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {}
   },
-  core:{
+  core: {
     disableTelemetry: true, // 👈 Disables telemetry
-    enableCrashReports: false, // 👈 Appends the crash reports to the telemetry events
+    enableCrashReports: false // 👈 Appends the crash reports to the telemetry events
   },
 
   staticDirs: ['../public']

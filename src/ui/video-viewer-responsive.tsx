@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 
 import { DetectionCallbackArgs, useVideoFrameHook } from '../hooks/use-video-frame-hook.ts';
 import { makeDetectionResponsive } from '../libs';
-import { VideoWithSvgOverlay } from './video-with-svg-overlay.tsx';
+import { MediaWithSvgOverlay } from './media-with-svg-overlay.tsx';
 
 export function VideoViewerResponsive({
   src,
@@ -20,7 +20,7 @@ export function VideoViewerResponsive({
   );
   const videoRef = useVideoFrameHook(callback);
   return (
-    <VideoWithSvgOverlay
+    <MediaWithSvgOverlay
       video={
         <video
           ref={videoRef}
@@ -48,6 +48,6 @@ export function VideoViewerResponsive({
           />
         );
       })}
-    </VideoWithSvgOverlay>
+    </MediaWithSvgOverlay>
   );
 }
