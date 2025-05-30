@@ -6,7 +6,7 @@ import { ExtendDetection } from '../types.ts';
 import { SvgOverlay } from './svg-overlay.tsx';
 
 export type VideoProps = ComponentProps<'video'>;
-function DetectionBox(detection: ExtendDetection) {
+export function DetectionBox(detection: ExtendDetection) {
   const pathData = boundingBoxToPolygonPoints(detection)!;
   // @ts-ignore
   if (detection.colorful) {
