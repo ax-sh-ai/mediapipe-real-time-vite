@@ -1,12 +1,12 @@
 import { ImageMediaWithSvgOverlay } from '../media-with-svg-overlay.tsx';
 import { useImageAnnotations } from './use-image-annotations.ts';
 
-export function ImageViewerResponsive() {
+export function ImageViewerResponsive({ src }: { src: string }) {
   const { ref, detections } = useImageAnnotations();
   console.log(detections);
   return (
     <div className={'h-dvh w-dvw overflow-hidden'}>
-      <ImageMediaWithSvgOverlay ref={ref} src={'./img.png'}>
+      <ImageMediaWithSvgOverlay ref={ref} src={src}>
         {detections.map(({ boundingBox, keypoints }, i) => {
           if (!boundingBox) return <></>;
           const { originX, originY, height, width, angle } = boundingBox;

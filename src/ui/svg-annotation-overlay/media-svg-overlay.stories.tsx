@@ -7,7 +7,7 @@ const data = [
   {
     categories: [
       {
-        score: 0.8682692646980286,
+        score: 0.9285385012626648,
         index: 0,
         categoryName: '',
         displayName: ''
@@ -15,47 +15,47 @@ const data = [
     ],
     keypoints: [
       {
-        x: 0.54115229845047,
-        y: 0.40340495109558105,
+        x: 0.2999419569969177,
+        y: 0.49318671226501465,
         score: 0,
         label: ''
       },
       {
-        x: 0.6804829835891724,
-        y: 0.4473888874053955,
+        x: 0.4356914162635803,
+        y: 0.48920994997024536,
         score: 0,
         label: ''
       },
       {
-        x: 0.6064131855964661,
-        y: 0.5755531787872314,
+        x: 0.2694648504257202,
+        y: 0.5545698404312134,
         score: 0,
         label: ''
       },
       {
-        x: 0.5881839990615845,
-        y: 0.6672369241714478,
+        x: 0.3091668486595154,
+        y: 0.6478142738342285,
         score: 0,
         label: ''
       },
       {
-        x: 0.4398498833179474,
-        y: 0.39385879039764404,
+        x: 0.3630484640598297,
+        y: 0.556501567363739,
         score: 0,
         label: ''
       },
       {
-        x: 0.7320264577865601,
-        y: 0.47962355613708496,
+        x: 0.6983460187911987,
+        y: 0.5614662766456604,
         score: 0,
         label: ''
       }
     ],
     boundingBox: {
-      originX: 1715,
-      originY: 712,
-      width: 1459,
-      height: 1458,
+      originX: 752,
+      originY: 1547,
+      width: 1422,
+      height: 1422,
       angle: 0
     }
   }
@@ -66,7 +66,7 @@ function MediaSvgOverlayContainer() {
   const dotRadius = 30;
   return (
     <div className={'w-[500px] overflow-hidden'}>
-      <ImageSvgAnnotationOverlay ref={ref} src={'./img.png'} onLoad={handleLoad}>
+      <ImageSvgAnnotationOverlay ref={ref} src={'./img_1.png'} onLoad={handleLoad}>
         {/* Render bounding boxes using normalized coordinates */}
         {dimensions &&
           data.map((item, key) => {
