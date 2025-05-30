@@ -1,39 +1,73 @@
-# React + TypeScript + Vite
+buggy but works
+drag and drop on dev serve
+and storybook for image experiments
 
-This template provides a minimal setup to get React working in Vite with HMR and
-some ESLint rules.
+[//]: # (# React + TypeScript + Vite)
 
-Currently, two official plugins are available:
+[//]: # ()
+[//]: # (This template provides a minimal setup to get React working in Vite with HMR and)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
-  uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
-  uses [SWC](https://swc.rs/) for Fast Refresh
+[//]: # (some ESLint rules.)
 
-## Expanding the ESLint configuration
+[//]: # ()
+[//]: # (Currently, two official plugins are available:)
 
-If you are developing a production application, we recommend updating the
-configuration to enable type aware lint rules:
+[//]: # ()
+[//]: # (- [@vitejs/plugin-react]&#40;https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md&#41;)
 
-- Configure the top-level `parserOptions` property like this:
+[//]: # (  uses [Babel]&#40;https://babeljs.io/&#41; for Fast Refresh)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname
-  }
-};
-```
+[//]: # (- [@vitejs/plugin-react-swc]&#40;https://github.com/vitejs/vite-plugin-react-swc&#41;)
 
-- Replace `plugin:@typescript-eslint/recommended` to
-  `plugin:@typescript-eslint/recommended-type-checked` or
-  `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install
-  [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and
-  add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends`
-  list
+[//]: # (  uses [SWC]&#40;https://swc.rs/&#41; for Fast Refresh)
+
+[//]: # ()
+[//]: # (## Expanding the ESLint configuration)
+
+[//]: # ()
+[//]: # (If you are developing a production application, we recommend updating the)
+
+[//]: # (configuration to enable type aware lint rules:)
+
+[//]: # ()
+[//]: # (- Configure the top-level `parserOptions` property like this:)
+
+[//]: # ()
+[//]: # (```js)
+
+[//]: # (export default {)
+
+[//]: # (  // other rules...)
+
+[//]: # (  parserOptions: {)
+
+[//]: # (    ecmaVersion: 'latest',)
+
+[//]: # (    sourceType: 'module',)
+
+[//]: # (    project: ['./tsconfig.json', './tsconfig.node.json'],)
+
+[//]: # (    tsconfigRootDir: __dirname)
+
+[//]: # (  })
+
+[//]: # (};)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (- Replace `plugin:@typescript-eslint/recommended` to)
+
+[//]: # (  `plugin:@typescript-eslint/recommended-type-checked` or)
+
+[//]: # (  `plugin:@typescript-eslint/strict-type-checked`)
+
+[//]: # (- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`)
+
+[//]: # (- Install)
+
+[//]: # (  [eslint-plugin-react]&#40;https://github.com/jsx-eslint/eslint-plugin-react&#41; and)
+
+[//]: # (  add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends`)
+
+[//]: # (  list)
