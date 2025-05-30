@@ -1,25 +1,19 @@
 import clsx from 'clsx';
-import { ComponentPropsWithRef, PropsWithChildren, ReactNode } from 'react';
+import { ComponentPropsWithRef, PropsWithChildren, ReactNode, forwardRef } from 'react';
 
 export function MediaWithSvgOverlay({ video, children }: PropsWithChildren<{ video: ReactNode }>) {
   return (
     <div className='relative inline-block w-full max-w-full'>
       {video}
-      <svg className='absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none'>
-        {children}
-      </svg>
+      <svg className='absolute inset-0 overflow-hidden pointer-events-none'>{children}</svg>
     </div>
   );
 }
 
-export function ImageMediaWithSvgOverlay({
-  ref,
-  src,
-  alt,
-  className,
-  children,
-  ...props
-}: ComponentPropsWithRef<'img'>) {
+export const ImageMediaWithSvgOverlay = forwardRef<
+  HTMLImageElement,
+  Omit<ComponentPropsWithRef<'img'>, 'ref'>
+>(({ src, alt, className, children, ...props }, ref) => {
   return (
     <MediaWithSvgOverlay
       video={
@@ -35,4 +29,4 @@ export function ImageMediaWithSvgOverlay({
       {children}
     </MediaWithSvgOverlay>
   );
-}
+});
