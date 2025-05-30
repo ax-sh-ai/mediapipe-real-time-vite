@@ -4,8 +4,9 @@ const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 
   addons: [
+    // fixme later addons are buggy on storybook v9
     // '@storybook/addon-onboarding',
-    '@storybook/addon-links',
+    // '@storybook/addon-links',
     // '@storybook/addon-essentials',
     // '@chromatic-com/storybook',
     // '@storybook/addon-interactions'
